@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IstithMAR.ai — Smart Investment Guidance for Morocco</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --deep: #0D1117;
+    --surface: #141B26;
+    --surface2: #1C2535;
+    --border: rgba(201,168,76,0.18);
+    --text: #EEE8D5;
+    --muted: #8A9BB0;
+    --green: #2ECC89;
+    --red: #E85D5D;
+    --blue: #4A9EFF;
+    --purple: #9B7DFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(74,158,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .zellige-bg {
+    position: fixed;
+    top: 0; right: 0;
+    width: 500px; height: 500px;
+    opacity: 0.03;
+    background-image:
+      repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 30px 30px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+  }
+
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 20px; letter-spacing: -0.5px; }
+  .logo-text span { color: var(--gold); }
+  .nav-badge {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    background: rgba(201,168,76,0.12); border: 1px solid var(--border);
+    color: var(--gold); padding: 4px 10px; border-radius: 20px; letter-spacing: 1px;
+  }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .nav-link { font-size: 13px; color: var(--muted); cursor: pointer; transition: color 0.2s; }
+  .nav-link:hover { color: var(--text); }
+  .btn-nav {
+    background: linear-gradient(135deg, var(--gold), #B8962E);
+    color: var(--deep); font-weight: 700; font-size: 13px;
+    padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer;
+  }
+
+  .hero { position: relative; z-index: 1; padding: 70px 40px 50px; max-width: 1100px; margin: 0 auto; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--gold); letter-spacing: 2px; margin-bottom: 24px; text-transform: uppercase;
+  }
+  .hero-tag::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 900; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 22px; max-width: 700px; }
+  h1 .accent { color: var(--gold); }
+  h1 .underline-gold { position: relative; display: inline-block; }
+  h1 .underline-gold::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 3px; background: linear-gradient(90deg, var(--gold), transparent); }
+  .hero-sub { font-size: 16px; color: var(--muted); line-height: 1.7; max-width: 560px; margin-bottom: 40px; }
+
+  .analyzer-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px; position: relative; overflow: hidden; margin-bottom: 32px;
+  }
+  .analyzer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .card-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+  .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+  .input-group label { font-size: 11px; font-family: 'Space Mono', monospace; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+  .input-group input, .input-group select {
+    background: var(--surface2); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; color: var(--text); padding: 12px 16px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; width: 100%;
+  }
+  .input-group input:focus, .input-group select:focus { border-color: var(--gold); }
+  .input-group select option { background: var(--surface2); }
+  .input-full { grid-column: 1 / -1; }
+
+  .analyze-btn {
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, var(--gold) 0%, #B8962E 100%);
+    border: none; border-radius: 12px; color: var(--deep); font-weight: 700; font-size: 15px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: transform 0.15s, box-shadow 0.15s; font-family: 'DM Sans', sans-serif; margin-top: 8px;
+  }
+  .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,168,76,0.25); }
+
+  .results-panel { display: none; animation: fadeInUp 0.5s ease; }
+  .results-panel.visible { display: block; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .results-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+  .success-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+  .success-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 16px; }
+  .gauge-wrap { display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
+  .gauge-svg { flex-shrink: 0; }
+  .gauge-pct { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; line-height: 1; color: var(--gold); }
+  .gauge-verdict { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .gauge-verdict strong { color: var(--gold); font-weight: 600; }
+  .factors { display: flex; flex-direction: column; gap: 10px; }
+  .factor { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .factor-name { color: var(--muted); min-width: 130px; }
+  .factor-bar-wrap { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; height: 6px; overflow: hidden; }
+  .factor-bar { height: 100%; border-radius: 4px; }
+  .factor-val { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gold); min-width: 32px; text-align: right; }
+
+  .risk-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .risk-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .risk-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+
+  .rec-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .rec-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .rec-icon { font-size: 22px; margin-bottom: 10px; }
+  .rec-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+  .rec-value { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .rec-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .alt-section { background: var(--surface); border: 1px solid rgba(232,93,93,0.2); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+  .alt-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .alt-tag { font-family: 'Space Mono', monospace; font-size: 10px; background: rgba(232,93,93,0.1); border: 1px solid rgba(232,93,93,0.25); color: var(--red); padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+  .alt-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+  .alt-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .alt-card { background: var(--surface2); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 18px; cursor: pointer; transition: border-color 0.2s, transform 0.15s; position: relative; }
+  .alt-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .alt-card.best { border-color: var(--green); }
+  .best-badge { position: absolute; top: 10px; right: 10px; font-family: 'Space Mono', monospace; font-size: 9px; background: rgba(46,204,137,0.15); border: 1px solid rgba(46,204,137,0.3); color: var(--green); padding: 3px 8px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .alt-emoji { font-size: 26px; margin-bottom: 8px; }
+  .alt-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .alt-desc { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+  .alt-score { display: flex; align-items: center; gap: 6px; }
+  .alt-score-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+  .alt-score-fill { height: 100%; border-radius: 2px; background: var(--green); }
+  .alt-score-num { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--green); }
+
+  .map-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 20px; }
+  .map-header { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap:wrap; }
+  .map-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; }
+  .map-legend { display: flex; gap: 16px; flex-wrap:wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .map-body { height: 240px; background: linear-gradient(135deg, #111822, #161F2E); position: relative; overflow: hidden; }
+  .map-body::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(74,158,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(74,158,255,0.06) 1px, transparent 1px); background-size: 40px 40px; }
+  .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index:5; transition:transform 0.2s; }
+  .map-pin:hover { transform:scale(1.2); z-index:20; }
+  .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(46,204,137,0.4); } 50% { box-shadow: 0 0 0 8px rgba(46,204,137,0); } }
+  .pin-label { font-size: 10px; font-family: 'Space Mono', monospace; margin-top: 4px; background: var(--surface); padding: 2px 6px; border-radius: 4px; white-space: nowrap; border: 1px solid var(--border); }
+  .zone-tooltip { position:absolute; background:var(--surface2); border:1px solid var(--gold); border-radius:8px; padding:6px 12px; font-size:11px; color:var(--gold-light); bottom:30px; display:none; white-space:nowrap; box-shadow:0 5px 15px black; z-index:30; }
+  .map-pin:hover .zone-tooltip { display:block; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; transition:all 0.2s; }
+  .stat-card:hover { border-color:var(--gold); }
+  .stat-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .stat-change { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+
+  .loading-overlay { display: none; position: absolute; inset: 0; background: rgba(13,17,23,0.92); border-radius: 20px; align-items: center; justify-content: center; flex-direction: column; gap: 20px; z-index: 20; backdrop-filter: blur(4px); }
+  .loading-overlay.active { display: flex; }
+  .loader-ring { width: 60px; height: 60px; border: 3px solid rgba(201,168,76,0.15); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-steps { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+  .loader-step { display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 0.3s; }
+  .loader-step.active { opacity: 1; color: var(--gold); }
+  .loader-step.done { opacity: 0.7; color: var(--green); }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* ----- ADVANCED FEATURES ----- */
+  .live-data-ticker {
+    background:var(--surface2); border-radius:40px; padding:10px 20px; margin-bottom:20px;
+    display:flex; align-items:center; gap:24px; flex-wrap:wrap; border:1px solid var(--border);
+    font-size:13px;
+  }
+  .ticker-item { display:flex; align-items:center; gap:8px; }
+  .ticker-item i { color:var(--gold); font-size:12px; }
+  .blink { width:8px; height:8px; background:var(--green); border-radius:50%; animation:blink 1.4s infinite; }
+  @keyframes blink { 0%{opacity:0.3;} 50%{opacity:1;} 100%{opacity:0.3;} }
+
+  .canvas-section {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:20px;
+  }
+  .canvas-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .canvas-header h3 { font-family:'Playfair Display'; font-size:18px; }
+  .canvas-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .canvas-cell {
+    background:var(--surface2); border-radius:12px; padding:14px; border-left:3px solid var(--gold);
+  }
+  .canvas-cell .label { font-family:'Space Mono'; font-size:9px; letter-spacing:1px; color:var(--muted); }
+  .canvas-cell .value { font-size:13px; font-weight:500; margin-top:5px; color:var(--gold-light); }
+
+  .pdf-toolbar {
+    display:flex; gap:16px; justify-content:flex-end; margin:10px 0 20px;
+  }
+  .pdf-btn {
+    background:transparent; border:1px solid var(--gold); color:var(--gold);
+    padding:10px 24px; border-radius:40px; font-size:13px; cursor:pointer;
+    display:flex; align-items:center; gap:10px; transition:0.15s;
+  }
+  .pdf-btn:hover { background:var(--gold); color:var(--deep); }
+  .pdf-btn i { font-size:14px; }
+
+  .features-strip {
+    position: relative; z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+  .feature-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .feature-icon { font-size: 18px; }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    background: #0A0F18;
+    border-top: 1px solid var(--border);
+    padding: 48px 40px 32px;
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 44px; }
+  .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .footer-logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .footer-logo-text { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 18px; letter-spacing: -0.5px; }
+  .footer-logo-text span { color: var(--gold); }
+  .footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 240px; margin-bottom: 20px; }
+  .founder-sig { display: inline-flex; flex-direction: column; gap: 4px; padding: 14px 18px; background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; position: relative; overflow: hidden; }
+  .founder-sig::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--gold), transparent); border-radius: 3px 0 0 3px; }
+  .sig-role { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; opacity: 0.8; }
+  .sig-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: 0.3px; }
+  .sig-handle { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+  .footer-col-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-link { font-size: 13px; color: var(--muted); cursor: pointer; transition: color 0.2s; text-decoration: none; }
+  .footer-link:hover { color: var(--text); }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 16px; }
+  .footer-copy { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .footer-copy strong { color: var(--gold); font-weight: 600; }
+  .footer-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .footer-badge { font-family: 'Space Mono', monospace; font-size: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; }
+
+  .scrollable-main { max-width: 1100px; margin: 0 auto; padding: 0 40px 40px; position: relative; z-index: 1; }
+
+  @media (max-width: 768px) {
+    .input-grid, .results-grid, .rec-grid, .alt-cards, .canvas-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    nav { padding: 16px 20px; }
+    .hero { padding: 40px 20px 30px; }
+    .scrollable-main { padding: 0 20px 40px; }
+    .features-strip { flex-wrap: wrap; gap: 20px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    footer { padding: 36px 20px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="zellige-bg"></div>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon">🔮</div>
+    <div class="logo-text">Istith<span>MAR</span>.ai</div>
+  </div>
+  <span class="nav-badge">BETA · المغرب</span>
+  <div class="nav-right">
+    <span class="nav-link">How it works</span>
+    <span class="nav-link">Case studies</span>
+    <button class="btn-nav">Start Free →</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">AI-Powered Investment Intelligence</div>
+  <h1>Your <span class="accent">Smart Consultant</span><br>for <span class="underline-gold">Moroccan Markets</span></h1>
+  <p class="hero-sub">Enter your budget and business idea. Our AI analyzes local demographics, competitor density, foot traffic, and market sentiment to predict your success — in minutes, not months.</p>
+</div>
+
+<div class="scrollable-main">
+
+  <div class="analyzer-card" id="analyzerCard">
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loader-ring"></div>
+      <div class="loader-steps">
+        <div class="loader-step" id="step1"><div class="step-dot"></div>Scanning Google Reviews & social sentiment...</div>
+        <div class="loader-step" id="step2"><div class="step-dot"></div>Analyzing competitor density & foot traffic...</div>
+        <div class="loader-step" id="step3"><div class="step-dot"></div>Processing local demographics & income levels...</div>
+        <div class="loader-step" id="step4"><div class="step-dot"></div>Running ML viability prediction model...</div>
+        <div class="loader-step" id="step5"><div class="step-dot"></div>Generating recommendations & alternatives...</div>
+      </div>
+    </div>
+    <div class="card-title">🎯 Analyze Your Business Idea</div>
+    <div class="card-subtitle">Tell us about your project — our AI does the rest</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label>Your Budget (MAD)</label>
+        <input type="text" id="budgetInput" value="200,000">
+      </div>
+      <div class="input-group">
+        <label>City / Region</label>
+        <select id="citySelect">
+          <option selected value="Casablanca">Casablanca</option> <!-- Casablanca default -->
+          <option>Rabat</option><option>Marrakech</option><option>Fès</option>
+          <option>Tanger</option><option>Agadir</option><option>Béni Mellal</option>
+          <option>Meknès</option><option>Oujda</option><option>Kénitra</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Neighborhood / Zone</label>
+        <input type="text" id="zoneInput" value="Maarif">
+      </div>
+      <div class="input-group input-full">
+        <label>Your Business Idea</label>
+        <input type="text" id="ideaInput" value="Open a restaurant — traditional Moroccan cuisine">
+      </div>
+    </div>
+    <button class="analyze-btn" onclick="runAnalysis()">
+      <span>🔍</span><span>Analyze My Idea with AI</span><span>→</span>
+    </button>
+  </div>
+
+  <!-- Advanced live data ticker (simulated) -->
+  <div class="live-data-ticker">
+    <span class="ticker-item"><i class="fas fa-circle blink"></i> live</span>
+    <span class="ticker-item"><i class="fas fa-map-pin"></i> Maarif foot traffic: +8.2% (24h)</span>
+    <span class="ticker-item"><i class="fas fa-utensils"></i> 3 new restaurant reviews in last hour</span>
+    <span class="ticker-item"><i class="fas fa-chart-line"></i> Competitor density index: 0.74</span>
+    <span class="ticker-item"><i class="fas fa-temperature-high"></i> Ramadan demand forecast: +22%</span>
+  </div>
+
+  <div class="results-panel" id="resultsPanel">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Data Sources</div><div class="stat-value" style="color:var(--blue)">27</div><div class="stat-change" style="color:var(--green)">+3 new</div></div>
+      <div class="stat-card"><div class="stat-label">Competitors Found</div><div class="stat-value" style="color:var(--gold)">11</div><div class="stat-change" style="color:var(--red)">↑ high density</div></div>
+      <div class="stat-card"><div class="stat-label">Avg. Monthly Footfall</div><div class="stat-value" style="color:var(--green)">38.2K</div><div class="stat-change" style="color:var(--green)">↑ good</div></div>
+      <div class="stat-card"><div class="stat-label">Avg. Meal Price (zone)</div><div class="stat-value" style="color:var(--text)">47</div><div class="stat-change">MAD</div></div>
+    </div>
+
+    <div class="results-grid">
+      <div class="success-card">
+        <div class="success-label">VIABILITY PREDICTION · ADVANCED ML</div>
+        <div class="gauge-wrap">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+            <circle cx="55" cy="55" r="46" fill="none" stroke="url(#gaugeGrad)" stroke-width="10"
+              stroke-dasharray="289" stroke-dashoffset="115" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+            <defs><linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs>
+          </svg>
+          <div class="gauge-info">
+            <div class="gauge-pct">60%</div>
+            <div class="gauge-verdict">Moderate Viability<br><strong>Adjustments recommended</strong></div>
+          </div>
+        </div>
+        <div class="factors">
+          <div class="factor"><div class="factor-name">Market Demand</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:78%;background:var(--green)"></div></div><div class="factor-val">78%</div></div>
+          <div class="factor"><div class="factor-name">Competition</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:38%;background:var(--red)"></div></div><div class="factor-val">38%</div></div>
+          <div class="factor"><div class="factor-name">Budget Fit</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:65%;background:var(--gold)"></div></div><div class="factor-val">65%</div></div>
+          <div class="factor"><div class="factor-name">Location Score</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:70%;background:var(--blue)"></div></div><div class="factor-val">70%</div></div>
+          <div class="factor"><div class="factor-name">Sentiment Score</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:55%;background:var(--gold)"></div></div><div class="factor-val">55%</div></div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-title">⚠️ Key Risk Factors</div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--red)"></div><span><strong>Overcrowded niche:</strong> 11 Moroccan restaurants within 800m.</span></div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--red)"></div><span><strong>Budget tension:</strong> full dine-in needs ~300K MAD.</span></div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--gold)"></div><span><strong>Price ceiling:</strong> 47 MAD average check.</span></div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--blue)"></div><span><strong>Summer dip:</strong> -35% revenue July‑Aug.</span></div>
+      </div>
+    </div>
+
+    <!-- ADVANCED: interactive map with zones (Casablanca) -->
+    <div class="map-card">
+      <div class="map-header"><div class="map-title">🗺️ Dynamic heat zones · Casablanca (click pins)</div><div class="map-legend"><span class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> competitor</span><span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> best zone</span><span class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> your idea</span></div></div>
+      <div class="map-body" id="interactiveMap">
+        <div class="map-pin" style="left:50%;top:45%" data-zone="maarif"><div class="pin-dot" style="background:var(--gold);border-color:var(--gold)"></div><div class="pin-label">📍 Maarif</div><div class="zone-tooltip">Your zone · 42% match · high rent</div></div>
+        <div class="map-pin" style="left:28%;top:65%" data-zone="hayMohammadi"><div class="pin-dot" style="background:var(--green);border-color:var(--green)"></div><div class="pin-label">✨ Hay Mohammadi</div><div class="zone-tooltip">Best alternative · 78% match · lower rent</div></div>
+        <div class="map-pin" style="left:48%;top:52%" data-zone="comp1"><div class="pin-dot" style="background:var(--red);border-color:var(--red);animation:none"></div><div class="pin-label">🍽️ Comp</div><div class="zone-tooltip">Moroccan restaurant · high traffic</div></div>
+        <div class="map-pin" style="left:55%;top:38%" data-zone="comp2"><div class="pin-dot" style="background:var(--red);border-color:var(--red);animation:none"></div><div class="pin-label">🍽️ Comp</div><div class="zone-tooltip">Traditional · 4.2 ★</div></div>
+        <div class="map-pin" style="left:42%;top:40%" data-zone="comp3"><div class="pin-dot" style="background:var(--red);border-color:var(--red);animation:none"></div><div class="pin-label">🍽️ Comp</div><div class="zone-tooltip">Couscous specialist</div></div>
+        <div style="position:absolute;bottom:10px;right:15px;font-size:10px;color:var(--muted)">click pin → updates below</div>
+      </div>
+    </div>
+
+    <!-- ADVANCED: Business Model Canvas preview -->
+    <div class="canvas-section">
+      <div class="canvas-header"><i class="fas fa-th-large" style="color:var(--gold)"></i><h3>AI‑generated lean canvas (for best pivot)</h3></div>
+      <div class="canvas-grid">
+        <div class="canvas-cell"><span class="label">problem</span><div class="value">boring lunch options, price sensitivity</div></div>
+        <div class="canvas-cell"><span class="label">solution</span><div class="value">ghost kitchen · daily changing menu</div></div>
+        <div class="canvas-cell"><span class="label">unique value</span><div class="value">"Sauce Nomade" + 15min delivery</div></div>
+        <div class="canvas-cell"><span class="label">customers</span><div class="value">office workers, students 18‑35</div></div>
+        <div class="canvas-cell"><span class="label">key metrics</span><div class="value">repeat order rate, prep time</div></div>
+        <div class="canvas-cell"><span class="label">channels</span><div class="value">Glovo, Jumia, Instagram</div></div>
+        <div class="canvas-cell"><span class="label">cost structure</span><div class="value">80K‑110K MAD setup, 45% variable</div></div>
+        <div class="canvas-cell"><span class="label">revenue</span><div class="value">35‑60 MAD avg ticket</div></div>
+      </div>
+    </div>
+
+    <!-- advanced PDF toolbar -->
+    <div class="pdf-toolbar">
+      <button class="pdf-btn" onclick="simulatePDF()"><i class="fas fa-file-pdf"></i> download full AI report (simulation)</button>
+      <button class="pdf-btn" onclick="shareIdea()"><i class="fas fa-share-alt"></i> share snapshot</button>
+    </div>
+
+    <!-- existing recommendation cards -->
+    <div class="rec-grid">
+      <div class="rec-card"><div class="rec-icon">📍</div><div class="rec-label">Best Location</div><div class="rec-value">Hay Mohammadi</div><div class="rec-note">30% lower competition density</div></div>
+      <div class="rec-card"><div class="rec-icon">🍽️</div><div class="rec-label">Optimal menu</div><div class="rec-value">fast-casual Moroccan</div><div class="rec-note">delivery-first cuts cost 40%</div></div>
+      <div class="rec-card"><div class="rec-icon">💰</div><div class="rec-label">Sweet spot</div><div class="rec-value">30–55 MAD</div><div class="rec-note">82% orders under 60 MAD</div></div>
+    </div>
+
+    <div class="alt-section">
+      <div class="alt-header">
+        <div class="alt-tag">⚡ AI Alternative Ideas</div>
+        <div class="alt-title">Higher-potential ideas for your 200,000 MAD budget in Casablanca</div>
+      </div>
+      <div class="alt-cards">
+        <div class="alt-card best"><div class="best-badge">🏆 BEST FIT</div><div class="alt-emoji">🛵</div><div class="alt-name">Ghost Kitchen + Delivery</div><div class="alt-desc">Low overhead, no dine-in space. Setup cost ~80–110K MAD.</div><div class="alt-score"><div class="alt-score-bar"><div class="alt-score-fill" style="width:84%"></div></div><div class="alt-score-num">84%</div></div></div>
+        <div class="alt-card"><div class="alt-emoji">🥐</div><div class="alt-name">Bakery + Café Hybrid</div><div class="alt-desc">High morning traffic, less competition. 150–180K MAD.</div><div class="alt-score"><div class="alt-score-bar"><div class="alt-score-fill" style="width:77%"></div></div><div class="alt-score-num">77%</div></div></div>
+        <div class="alt-card"><div class="alt-emoji">📦</div><div class="alt-name">Wholesale Grocery Supply</div><div class="alt-desc">Supply restaurants/hotels. B2B, low failure rate.</div><div class="alt-score"><div class="alt-score-bar"><div class="alt-score-fill" style="width:72%"></div></div><div class="alt-score-num">72%</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="features-strip">
+  <div class="feature-item"><span class="feature-icon">🇲🇦</span> Built for Moroccan Markets</div>
+  <div class="feature-item"><span class="feature-icon">📊</span> Real Local Data, Updated Daily</div>
+  <div class="feature-item"><span class="feature-icon">🤖</span> ML-Powered Prediction Engine</div>
+  <div class="feature-item"><span class="feature-icon">🔒</span> Your Data Stays Private</div>
+  <div class="feature-item"><span class="feature-icon">⚡</span> Results in Under 60 Seconds</div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🔮</div>
+          <div class="footer-logo-text">Istith<span>MAR</span>.ai</div>
+        </div>
+        <p class="footer-tagline">Morocco's first AI-powered investment guidance platform — helping everyday people make smarter, data-driven business decisions.</p>
+        <div class="founder-sig">
+          <div class="sig-role">Co-Founder</div>
+          <div class="sig-name">Mourad Zerbane</div>
+          <div class="sig-handle">IstithMAR.ai · Morocco 🇲🇦</div>
+        </div>
+      </div>
+      <div><div class="footer-col-title">Platform</div><div class="footer-links"><a class="footer-link">How It Works</a><a class="footer-link">Analyze My Idea</a><a class="footer-link">Success Stories</a><a class="footer-link">Market Reports</a><a class="footer-link">Mobile App</a></div></div>
+      <div><div class="footer-col-title">Resources</div><div class="footer-links"><a class="footer-link">Business Guide</a><a class="footer-link">City Insights</a><a class="footer-link">Sector Trends</a><a class="footer-link">Blog</a><a class="footer-link">FAQ</a></div></div>
+      <div><div class="footer-col-title">Company</div><div class="footer-links"><a class="footer-link">About Us</a><a class="footer-link">Our Team</a><a class="footer-link">Investors</a><a class="footer-link">Press</a><a class="footer-link">Contact</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        © 2026 <strong>IstithMAR.ai</strong> — All rights reserved. Built with ❤️ for Morocco.<br>
+        Empowering small entrepreneurs across the Kingdom, one smart investment at a time.
+      </div>
+      <div class="footer-badges"><span class="footer-badge">🇲🇦 MADE IN MOROCCO</span><span class="footer-badge">AI POWERED</span><span class="footer-badge">DATA SECURE</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- Font Awesome for icons -->
+<script src="https://kit.fontawesome.com/a2b9e0a24d.js" crossorigin="anonymous"></script>
+<script>
+  function runAnalysis() {
+    const overlay = document.getElementById('loadingOverlay');
+    const results = document.getElementById('resultsPanel');
+    overlay.classList.add('active');
+    results.classList.remove('visible');
+    [1,2,3,4,5].forEach(i => {
+      document.getElementById('step'+i).classList.remove('active','done');
+    });
+    let current = 0;
+    function nextStep() {
+      if (current > 0) {
+        document.getElementById('step'+current).classList.remove('active');
+        document.getElementById('step'+current).classList.add('done');
+      }
+      current++;
+      if (current <= 5) {
+        document.getElementById('step'+current).classList.add('active');
+        setTimeout(nextStep, 700 + Math.random() * 400);
+      } else {
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          results.classList.add('visible');
+          results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 400);
+      }
+    }
+    nextStep();
+  }
+
+  // Interactive map click simulation
+  document.querySelectorAll('.map-pin').forEach(pin => {
+    pin.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const zone = pin.getAttribute('data-zone') || 'zone';
+      alert(`📍 Advanced zone insight: ${zone}\n(real‑time foot traffic + competitor density)`);
+    });
+  });
+
+  function simulatePDF() {
+    alert("📄 PDF report generated (demo).\nIncludes full financial forecast, competitor mapping, and risk register.\n-- Mourad Zerbane, co-founder");
+  }
+  function shareIdea() {
+    alert("🔗 Shareable snapshot copied to clipboard (simulated).\n‘Invest in Casablanca with AI’");
+  }
+  window.shareIdea = shareIdea;
+  window.simulatePDF = simulatePDF;
+</script>
+</body>
+</html>
