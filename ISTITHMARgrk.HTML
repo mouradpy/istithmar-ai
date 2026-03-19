@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IstithMAR - استثمار ذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        body { font-family: 'Cairo', sans-serif; }
+        .hero-bg { background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .loading-bar { animation: loading 2s linear infinite; }
+        @keyframes loading { 0% { width: 0%; } 100% { width: 100%; } }
+        .result-section { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-teal-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl">إ</div>
+                <div>
+                    <span class="text-3xl font-bold tracking-tighter text-teal-700">IstithMAR</span>
+                    <span class="text-xs text-teal-500 block -mt-1">استثمارك الذكي</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6 text-sm font-medium">
+                <a href="#" class="hover:text-teal-600">الرئيسية</a>
+                <a href="#" class="hover:text-teal-600">كيف يعمل</a>
+                <a href="#" class="hover:text-teal-600">أمثلة ناجحة</a>
+                <button onclick="resetPrototype()" 
+                        class="bg-teal-600 text-white px-6 py-2 rounded-2xl font-semibold hover:bg-teal-700 transition">
+                    ابدأ مشروع جديد
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero + Form -->
+    <div class="hero-bg text-white py-16">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h1 class="text-5xl font-bold mb-4">استثمر فلوسك بذكاء</h1>
+            <p class="text-2xl mb-8 text-teal-100">IstithMAR يحلل فكرتك بالذكاء الاصطناعي ويعطيك خطة كاملة + بدائل أفضل</p>
+            
+            <!-- Demo Form -->
+            <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl mx-auto text-gray-800">
+                <div class="flex justify-center mb-6">
+                    <div class="bg-teal-100 text-teal-700 text-xs font-bold px-4 py-1 rounded-full">DEMO جاهز</div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Budget -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-600">ميزانيتك (درهم)</label>
+                        <input id="budget" type="text" value="2,000,000" 
+                               class="w-full border border-gray-300 rounded-2xl px-6 py-4 text-2xl font-semibold focus:outline-none focus:border-teal-600">
+                    </div>
+                    
+                    <!-- Idea -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-600">نوع المشروع</label>
+                        <input id="idea" type="text" value="مطعم تقليدي مغربي" 
+                               class="w-full border border-gray-300 rounded-2xl px-6 py-4 text-lg font-medium focus:outline-none focus:border-teal-600">
+                    </div>
+                    
+                    <!-- Location -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-600">المدينة / الحي</label>
+                        <input id="location" type="text" value="بني ملال - قرب السوق" 
+                               class="w-full border border-gray-300 rounded-2xl px-6 py-4 text-lg font-medium focus:outline-none focus:border-teal-600">
+                    </div>
+                </div>
+
+                <!-- Big Analyze Button -->
+                <button onclick="runAnalysis()" 
+                        class="mt-10 w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white text-2xl font-bold py-6 rounded-3xl shadow-lg flex items-center justify-center gap-4 transition-all active:scale-95">
+                    <i class="fas fa-robot text-3xl"></i>
+                    <span>حلل فكرتي بالذكاء الاصطناعي</span>
+                    <i class="fas fa-arrow-left text-3xl"></i>
+                </button>
+                
+                <p class="text-center text-xs text-gray-500 mt-4">يستغرق التحليل 8 ثواني فقط • مدعوم بـ Machine Learning</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section (hidden until clicked) -->
+    <div id="results" class="result-section max-w-6xl mx-auto px-6 py-12">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-4xl font-bold text-teal-700">تحليل فكرتك جاهز!</h2>
+                <p class="text-gray-600">بني ملال • ميزانية 2,000,000 درهم • مطعم تقليدي</p>
+            </div>
+            <div onclick="resetPrototype()" 
+                 class="cursor-pointer text-teal-600 hover:text-teal-700 font-medium flex items-center gap-2">
+                <i class="fas fa-redo"></i> تحليل فكرة جديدة
+            </div>
+        </div>
+
+        <!-- Success Score -->
+        <div class="bg-white rounded-3xl p-8 shadow-xl card mb-8">
+            <div class="flex items-center justify-between">
+                <div class="text-center">
+                    <div class="text-7xl font-black text-emerald-600">78%</div>
+                    <div class="text-sm uppercase tracking-widest text-emerald-500 font-bold">احتمال النجاح</div>
+                </div>
+                <div class="h-28 w-px bg-gray-200"></div>
+                <div class="flex-1 pl-10">
+                    <div class="flex items-center gap-3 text-amber-500 mb-2">
+                        <i class="fas fa-chart-line text-xl"></i>
+                        <span class="font-semibold">التحليل الرئيسي</span>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        الموقع قرب السوق جيد، لكن المنافسة عالية في الأطباق التقليدية.<br>
+                        أفضل قائمة: طاجين + مشاوي + سلطات مغربية.<br>
+                        متوسط السعر المقترح: 55-95 درهم.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Breakdown -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Menu & Pricing -->
+            <div class="bg-white rounded-3xl p-8 card">
+                <h3 class="font-bold text-xl mb-6 flex items-center gap-3">
+                    <i class="fas fa-utensils text-teal-600"></i> القائمة والأسعار المقترحة
+                </h3>
+                <ul class="space-y-4">
+                    <li class="flex justify-between border-b pb-3"><span>طاجين الدجاج</span><span class="font-semibold">65 درهم</span></li>
+                    <li class="flex justify-between border-b pb-3"><span>مشاوي مشكلة</span><span class="font-semibold">85 درهم</span></li>
+                    <li class="flex justify-between border-b pb-3"><span>سلطة مغربية</span><span class="font-semibold">35 درهم</span></li>
+                    <li class="flex justify-between"><span>حريرة + مسمن</span><span class="font-semibold">45 درهم</span></li>
+                </ul>
+            </div>
+
+            <!-- Location Insights -->
+            <div class="bg-white rounded-3xl p-8 card">
+                <h3 class="font-bold text-xl mb-6 flex items-center gap-3">
+                    <i class="fas fa-map-marker-alt text-teal-600"></i> أفضل مكان في بني ملال
+                </h3>
+                <div class="bg-gray-100 rounded-2xl p-6 text-center h-56 flex flex-col items-center justify-center">
+                    <div class="text-6xl mb-3">📍</div>
+                    <p class="font-semibold">قرب سوق الخميس الرئيسي</p>
+                    <p class="text-sm text-gray-600 mt-2">كثافة مرور ١٢٠٠ شخص/يوم • منافسة منخفضة في الوجبات السريعة</p>
+                    <div class="mt-4 text-xs bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full inline-block">+٢٨٪ فرصة نجاح</div>
+                </div>
+            </div>
+
+            <!-- AI Alternatives -->
+            <div class="bg-white rounded-3xl p-8 card">
+                <h3 class="font-bold text-xl mb-6 flex items-center gap-3 text-amber-600">
+                    <i class="fas fa-lightbulb"></i> اقتراحات أفضل (AI)
+                </h3>
+                <div class="space-y-6">
+                    <div class="border border-dashed border-amber-400 rounded-2xl p-5">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="font-semibold">مطبخ توصيل فقط (بدون صالة)</div>
+                                <div class="text-xs text-emerald-600">٩٢٪ احتمال نجاح</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-emerald-600 font-bold">١٬٤٠٠٬٠٠٠ درهم</div>
+                                <div class="text-xs">توفير ٣٠٪</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-gray-500">أو</div>
+                    
+                    <div class="bg-teal-50 rounded-2xl p-5">
+                        <div class="font-semibold text-teal-700">كافيه متخصص في الحلويات المغربية</div>
+                        <div class="text-xs text-teal-600 mt-1">٨٥٪ نجاح • أقل منافسة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 mt-12">
+            <button onclick="alert('✅ التقرير تم تحميله كـ PDF (في النسخة الحقيقية)')" 
+                    class="flex-1 bg-teal-700 text-white py-5 rounded-3xl font-bold text-lg flex items-center justify-center gap-3">
+                <i class="fas fa-download"></i> 
+                حمل التقرير الكامل PDF
+            </button>
+            
+            <button onclick="alert('📲 سيتم إرسال التقرير على واتساب في التطبيق الحقيقي')" 
+                    class="flex-1 border-2 border-teal-600 text-teal-700 py-5 rounded-3xl font-bold text-lg flex items-center justify-center gap-3">
+                <i class="fas fa-whatsapp"></i> 
+                أرسل على واتساب
+            </button>
+        </div>
+        
+        <p class="text-center text-xs text-gray-400 mt-8">هذا نموذج تفاعلي تجريبي • في التطبيق الحقيقي سيعمل الذكاء الاصطناعي على بيانات حقيقية من جوجل، إنستغرام، وإحصائيات المغرب</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white py-8 text-center text-xs text-gray-400 border-t">
+        IstithMAR © 2026 • بني ملال، المغرب • مشروع تجريبي تفاعلي من Grok
+    </footer>
+
+    <script>
+        function runAnalysis() {
+            // Show loading
+            const btn = document.querySelector('button[onclick="runAnalysis()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `
+                <span class="flex items-center gap-3">
+                    <i class="fas fa-spinner fa-spin text-3xl"></i>
+                    يحلل الذكاء الاصطناعي...
+                </span>`;
+            btn.disabled = true;
+
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+                
+                // Restore button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2200);
+        }
+
+        function resetPrototype() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('budget').focus();
+        }
+
+        // Tailwind script already loaded via CDN
+    </script>
+</body>
+</html>

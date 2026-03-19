@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IstithMAR.ai — المستثمر الذكي للمغرب</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --deep: #0D1117;
+    --surface: #141B26;
+    --surface2: #1C2535;
+    --border: rgba(201,168,76,0.18);
+    --text: #EEE8D5;
+    --muted: #8A9BB0;
+    --green: #2ECC89;
+    --red: #E85D5D;
+    --blue: #4A9EFF;
+    --purple: #9B7DFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(74,158,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .zellige-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 500px; height: 500px;
+    opacity: 0.03;
+    background-image:
+      repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 30px 30px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+  }
+
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text { 
+    font-family: 'Playfair Display', serif; 
+    font-weight: 900; 
+    font-size: 20px; 
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  .logo-text span { color: var(--gold); }
+  .nav-badge {
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px;
+    background: rgba(201,168,76,0.12); 
+    border: 1px solid var(--border);
+    color: var(--gold); 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    letter-spacing: 1px;
+  }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .nav-link { font-size: 13px; color: var(--muted); cursor: pointer; transition: color 0.2s; }
+  .nav-link:hover { color: var(--text); }
+  .btn-nav {
+    background: linear-gradient(135deg, var(--gold), #B8962E);
+    color: var(--deep); 
+    font-weight: 700; 
+    font-size: 13px;
+    padding: 8px 20px; 
+    border-radius: 8px; 
+    border: none; 
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .hero { 
+    position: relative; 
+    z-index: 1; 
+    padding: 70px 40px 50px; 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    text-align: right;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center; 
+    gap: 8px;
+    font-family: 'Space Mono', monospace; 
+    font-size: 11px;
+    color: var(--gold); 
+    letter-spacing: 2px; 
+    margin-bottom: 24px; 
+    text-transform: uppercase;
+  }
+  .hero-tag::after { 
+    content: ''; 
+    width: 20px; 
+    height: 1px; 
+    background: var(--gold);
+    margin-right: 8px;
+  }
+  .hero-tag::before { display: none; }
+  h1 { 
+    font-family: 'Cairo', 'Playfair Display', serif; 
+    font-size: clamp(36px, 5vw, 64px); 
+    font-weight: 800; 
+    line-height: 1.2; 
+    letter-spacing: -1px; 
+    margin-bottom: 22px; 
+    max-width: 700px;
+  }
+  h1 .accent { color: var(--gold); }
+  h1 .underline-gold { position: relative; display: inline-block; }
+  h1 .underline-gold::after { 
+    content: ''; 
+    position: absolute; 
+    right: 0; 
+    bottom: -4px; 
+    width: 100%; 
+    height: 3px; 
+    background: linear-gradient(90deg, transparent, var(--gold)); 
+  }
+  .hero-sub { 
+    font-size: 16px; 
+    color: var(--muted); 
+    line-height: 1.7; 
+    max-width: 560px; 
+    margin-bottom: 40px;
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .analyzer-card {
+    background: var(--surface); 
+    border: 1px solid var(--border);
+    border-radius: 20px; 
+    padding: 36px; 
+    position: relative; 
+    overflow: hidden; 
+    margin-bottom: 32px;
+    text-align: right;
+  }
+  .analyzer-card::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    left: 0; 
+    height: 2px; 
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); 
+  }
+  .card-title { 
+    font-family: 'Cairo', serif; 
+    font-size: 20px; 
+    font-weight: 700; 
+    margin-bottom: 6px; 
+  }
+  .card-subtitle { 
+    font-size: 13px; 
+    color: var(--muted); 
+    margin-bottom: 28px; 
+  }
+
+  .input-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 16px; 
+    margin-bottom: 20px; 
+  }
+  .input-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+  }
+  .input-group label { 
+    font-size: 11px; 
+    font-family: 'Space Mono', monospace; 
+    letter-spacing: 1.5px; 
+    color: var(--muted); 
+    text-transform: uppercase; 
+  }
+  .input-group input, .input-group select {
+    background: var(--surface2); 
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; 
+    color: var(--text); 
+    padding: 12px 16px; 
+    font-size: 14px;
+    font-family: 'Cairo', 'DM Sans', sans-serif; 
+    outline: none; 
+    transition: border-color 0.2s; 
+    width: 100%;
+    text-align: right;
+  }
+  .input-group input:focus, .input-group select:focus { border-color: var(--gold); }
+  .input-group select option { background: var(--surface2); }
+  .input-full { grid-column: 1 / -1; }
+
+  .analyze-btn {
+    width: 100%; 
+    padding: 16px;
+    background: linear-gradient(135deg, var(--gold) 0%, #B8962E 100%);
+    border: none; 
+    border-radius: 12px; 
+    color: var(--deep); 
+    font-weight: 700; 
+    font-size: 15px;
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px;
+    transition: transform 0.15s, box-shadow 0.15s; 
+    font-family: 'Cairo', sans-serif; 
+    margin-top: 8px;
+  }
+  .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,168,76,0.25); }
+
+  .results-panel { display: none; animation: fadeInUp 0.5s ease; }
+  .results-panel.visible { display: block; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .results-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+  .success-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+  .success-label { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px; 
+    letter-spacing: 2px; 
+    color: var(--muted); 
+    text-transform: uppercase; 
+    margin-bottom: 16px; 
+  }
+  .gauge-wrap { display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
+  .gauge-svg { flex-shrink: 0; }
+  .gauge-pct { 
+    font-family: 'Cairo', serif; 
+    font-size: 52px; 
+    font-weight: 800; 
+    line-height: 1; 
+    color: var(--gold); 
+  }
+  .gauge-verdict { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .gauge-verdict strong { color: var(--gold); font-weight: 600; }
+  .factors { display: flex; flex-direction: column; gap: 10px; }
+  .factor { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .factor-name { color: var(--muted); min-width: 130px; }
+  .factor-bar-wrap { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; height: 6px; overflow: hidden; }
+  .factor-bar { height: 100%; border-radius: 4px; }
+  .factor-val { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gold); min-width: 32px; text-align: left; }
+
+  .risk-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .risk-title { 
+    font-family: 'Cairo', serif; 
+    font-size: 16px; 
+    font-weight: 700; 
+    margin-bottom: 16px; 
+  }
+  .risk-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+
+  .rec-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .rec-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .rec-icon { font-size: 22px; margin-bottom: 10px; }
+  .rec-label { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px; 
+    letter-spacing: 1.5px; 
+    color: var(--gold); 
+    text-transform: uppercase; 
+    margin-bottom: 8px; 
+  }
+  .rec-value { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .rec-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .alt-section { background: var(--surface); border: 1px solid rgba(232,93,93,0.2); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+  .alt-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .alt-tag { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px; 
+    background: rgba(232,93,93,0.1); 
+    border: 1px solid rgba(232,93,93,0.25); 
+    color: var(--red); 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    letter-spacing: 1px; 
+    text-transform: uppercase; 
+  }
+  .alt-title { 
+    font-family: 'Cairo', serif; 
+    font-size: 17px; 
+    font-weight: 700; 
+  }
+  .alt-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .alt-card { 
+    background: var(--surface2); 
+    border: 1px solid rgba(255,255,255,0.06); 
+    border-radius: 12px; 
+    padding: 18px; 
+    cursor: pointer; 
+    transition: border-color 0.2s, transform 0.15s; 
+    position: relative; 
+  }
+  .alt-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .alt-card.best { border-color: var(--green); }
+  .best-badge { 
+    position: absolute; 
+    top: 10px; 
+    left: 10px; 
+    right: auto;
+    font-family: 'Space Mono', monospace; 
+    font-size: 9px; 
+    background: rgba(46,204,137,0.15); 
+    border: 1px solid rgba(46,204,137,0.3); 
+    color: var(--green); 
+    padding: 3px 8px; 
+    border-radius: 10px; 
+    letter-spacing: 1px; 
+    text-transform: uppercase; 
+  }
+  .alt-emoji { font-size: 26px; margin-bottom: 8px; }
+  .alt-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .alt-desc { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+  .alt-score { display: flex; align-items: center; gap: 6px; }
+  .alt-score-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+  .alt-score-fill { height: 100%; border-radius: 2px; background: var(--green); }
+  .alt-score-num { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--green); }
+
+  .map-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 20px; }
+  .map-header { 
+    padding: 18px 22px; 
+    border-bottom: 1px solid var(--border); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-wrap:wrap; 
+  }
+  .map-title { 
+    font-family: 'Cairo', serif; 
+    font-size: 16px; 
+    font-weight: 700; 
+  }
+  .map-legend { display: flex; gap: 16px; flex-wrap:wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .map-body { 
+    height: 240px; 
+    background: linear-gradient(135deg, #111822, #161F2E); 
+    position: relative; 
+    overflow: hidden; 
+  }
+  .map-body::before { 
+    content: ''; 
+    position: absolute; 
+    inset: 0; 
+    background-image: linear-gradient(rgba(74,158,255,0.06) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(74,158,255,0.06) 1px, transparent 1px); 
+    background-size: 40px 40px; 
+  }
+  .map-pin { 
+    position: absolute; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    cursor: pointer; 
+    z-index:5; 
+    transition:transform 0.2s; 
+  }
+  .map-pin:hover { transform:scale(1.2); z-index:20; }
+  .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid; animation: pulse 2s infinite; }
+  @keyframes pulse { 
+    0%, 100% { box-shadow: 0 0 0 0 rgba(46,204,137,0.4); } 
+    50% { box-shadow: 0 0 0 8px rgba(46,204,137,0); } 
+  }
+  .pin-label { 
+    font-size: 10px; 
+    font-family: 'Space Mono', monospace; 
+    margin-top: 4px; 
+    background: var(--surface); 
+    padding: 2px 6px; 
+    border-radius: 4px; 
+    white-space: nowrap; 
+    border: 1px solid var(--border); 
+  }
+  .zone-tooltip { 
+    position:absolute; 
+    background:var(--surface2); 
+    border:1px solid var(--gold); 
+    border-radius:8px; 
+    padding:6px 12px; 
+    font-size:11px; 
+    color:var(--gold-light); 
+    bottom:30px; 
+    display:none; 
+    white-space:nowrap; 
+    box-shadow:0 5px 15px black; 
+    z-index:30; 
+  }
+  .map-pin:hover .zone-tooltip { display:block; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .stat-card { 
+    background: var(--surface); 
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    padding: 18px 20px; 
+    transition:all 0.2s; 
+  }
+  .stat-card:hover { border-color:var(--gold); }
+  .stat-label { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px; 
+    letter-spacing: 1px; 
+    color: var(--muted); 
+    text-transform: uppercase; 
+    margin-bottom: 8px; 
+  }
+  .stat-value { 
+    font-family: 'Cairo', serif; 
+    font-size: 24px; 
+    font-weight: 700; 
+    line-height: 1; 
+    margin-bottom: 4px; 
+  }
+  .stat-change { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+
+  .loading-overlay { 
+    display: none; 
+    position: absolute; 
+    inset: 0; 
+    background: rgba(13,17,23,0.92); 
+    border-radius: 20px; 
+    align-items: center; 
+    justify-content: center; 
+    flex-direction: column; 
+    gap: 20px; 
+    z-index: 20; 
+    backdrop-filter: blur(4px); 
+  }
+  .loading-overlay.active { display: flex; }
+  .loader-ring { 
+    width: 60px; 
+    height: 60px; 
+    border: 3px solid rgba(201,168,76,0.15); 
+    border-top-color: var(--gold); 
+    border-radius: 50%; 
+    animation: spin 0.9s linear infinite; 
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-steps { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+  .loader-step { display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 0.3s; }
+  .loader-step.active { opacity: 1; color: var(--gold); }
+  .loader-step.done { opacity: 0.7; color: var(--green); }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* Advanced features */
+  .live-data-ticker {
+    background:var(--surface2); 
+    border-radius:40px; 
+    padding:10px 20px; 
+    margin-bottom:20px;
+    display:flex; 
+    align-items:center; 
+    gap:24px; 
+    flex-wrap:wrap; 
+    border:1px solid var(--border);
+    font-size:13px;
+  }
+  .ticker-item { display:flex; align-items:center; gap:8px; }
+  .ticker-item i { color:var(--gold); font-size:12px; }
+  .blink { width:8px; height:8px; background:var(--green); border-radius:50%; animation:blink 1.4s infinite; }
+  @keyframes blink { 0%{opacity:0.3;} 50%{opacity:1;} 100%{opacity:0.3;} }
+
+  .canvas-section {
+    background:var(--surface); 
+    border:1px solid var(--border); 
+    border-radius:16px; 
+    padding:22px; 
+    margin-bottom:20px;
+  }
+  .canvas-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .canvas-header h3 { font-family:'Cairo'; font-size:18px; }
+  .canvas-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .canvas-cell {
+    background:var(--surface2); 
+    border-radius:12px; 
+    padding:14px; 
+    border-right:3px solid var(--gold);
+    border-left: none;
+  }
+  .canvas-cell .label { 
+    font-family:'Space Mono'; 
+    font-size:9px; 
+    letter-spacing:1px; 
+    color:var(--muted); 
+  }
+  .canvas-cell .value { 
+    font-size:13px; 
+    font-weight:500; 
+    margin-top:5px; 
+    color:var(--gold-light); 
+  }
+
+  .pdf-toolbar {
+    display:flex; 
+    gap:16px; 
+    justify-content:flex-start; 
+    margin:10px 0 20px;
+  }
+  .pdf-btn {
+    background:transparent; 
+    border:1px solid var(--gold); 
+    color:var(--gold);
+    padding:10px 24px; 
+    border-radius:40px; 
+    font-size:13px; 
+    cursor:pointer;
+    display:flex; 
+    align-items:center; 
+    gap:10px; 
+    transition:0.15s;
+    font-family: 'Cairo', sans-serif;
+  }
+  .pdf-btn:hover { background:var(--gold); color:var(--deep); }
+  .pdf-btn i { font-size:14px; }
+
+  .features-strip {
+    position: relative; 
+    z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex; 
+    justify-content: center; 
+    gap: 48px; 
+    flex-wrap: wrap;
+  }
+  .feature-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .feature-icon { font-size: 18px; }
+
+  /* FOOTER */
+  footer {
+    position: relative; 
+    z-index: 1;
+    background: #0A0F18;
+    border-top: 1px solid var(--border);
+    padding: 48px 40px 32px;
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 44px; }
+  .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .footer-logo-icon { 
+    width: 34px; 
+    height: 34px; 
+    background: linear-gradient(135deg, var(--gold), var(--gold-light)); 
+    border-radius: 8px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 16px; 
+  }
+  .footer-logo-text { 
+    font-family: 'Playfair Display', serif; 
+    font-weight: 900; 
+    font-size: 18px; 
+    letter-spacing: -0.5px; 
+  }
+  .footer-logo-text span { color: var(--gold); }
+  .footer-tagline { 
+    font-size: 13px; 
+    color: var(--muted); 
+    line-height: 1.7; 
+    max-width: 240px; 
+    margin-bottom: 20px; 
+  }
+  .founder-sig { 
+    display: inline-flex; 
+    flex-direction: column; 
+    gap: 4px; 
+    padding: 14px 18px; 
+    background: rgba(201,168,76,0.05); 
+    border: 1px solid rgba(201,168,76,0.2); 
+    border-radius: 12px; 
+    position: relative; 
+    overflow: hidden; 
+  }
+  .founder-sig::before { 
+    content: ''; 
+    position: absolute; 
+    right: 0; 
+    top: 0; 
+    bottom: 0; 
+    width: 3px; 
+    background: linear-gradient(180deg, var(--gold), transparent); 
+    border-radius: 0 3px 3px 0; 
+  }
+  .sig-role { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 9px; 
+    letter-spacing: 2px; 
+    color: var(--gold); 
+    text-transform: uppercase; 
+    opacity: 0.8; 
+  }
+  .sig-name { 
+    font-family: 'Cairo', serif; 
+    font-size: 17px; 
+    font-weight: 700; 
+    color: var(--text); 
+    letter-spacing: 0.3px; 
+  }
+  .sig-handle { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+  .footer-col-title { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px; 
+    letter-spacing: 2px; 
+    color: var(--gold); 
+    text-transform: uppercase; 
+    margin-bottom: 16px; 
+  }
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-link { 
+    font-size: 13px; 
+    color: var(--muted); 
+    cursor: pointer; 
+    transition: color 0.2s; 
+    text-decoration: none; 
+  }
+  .footer-link:hover { color: var(--text); }
+  .footer-bottom { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding-top: 28px; 
+    border-top: 1px solid rgba(255,255,255,0.06); 
+    flex-wrap: wrap; 
+    gap: 16px; 
+  }
+  .footer-copy { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .footer-copy strong { color: var(--gold); font-weight: 600; }
+  .footer-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .footer-badge { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 10px; 
+    background: rgba(255,255,255,0.04); 
+    border: 1px solid rgba(255,255,255,0.08); 
+    color: var(--muted); 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    letter-spacing: 1px; 
+  }
+
+  .scrollable-main { 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    padding: 0 40px 40px; 
+    position: relative; 
+    z-index: 1; 
+  }
+
+  @media (max-width: 768px) {
+    .input-grid, .results-grid, .rec-grid, .alt-cards, .canvas-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    nav { padding: 16px 20px; }
+    .hero { padding: 40px 20px 30px; }
+    .scrollable-main { padding: 0 20px 40px; }
+    .features-strip { flex-wrap: wrap; gap: 20px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    footer { padding: 36px 20px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="zellige-bg"></div>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon">🔮</div>
+    <div class="logo-text">Istith<span>MAR</span>.ai</div>
+  </div>
+  <span class="nav-badge">بيتا · المغرب</span>
+  <div class="nav-right">
+    <span class="nav-link">كيف يعمل</span>
+    <span class="nav-link">دراسات حالة</span>
+    <button class="btn-nav">ابدأ مجاناً ←</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">ذكاء اصطناعي للاستثمار</div>
+  <h1>مستشارك <span class="accent">الذكي</span><br>لـ <span class="underline-gold">السوق المغربي</span></h1>
+  <p class="hero-sub">أدخل ميزانيتك وفكرة مشروعك. نظامنا يحلل البيانات المحلية الحقيقية: آراء جوجل، كثافة المنافسين، حركة المرور، ومشاعر وسائل التواصل — ليمنحك نسبة نجاح دقيقة وتوصيات مخصصة.</p>
+</div>
+
+<div class="scrollable-main">
+
+  <div class="analyzer-card" id="analyzerCard">
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loader-ring"></div>
+      <div class="loader-steps">
+        <div class="loader-step" id="step1"><div class="step-dot"></div>جاري مسح تقييمات جوجل ومواقع التواصل...</div>
+        <div class="loader-step" id="step2"><div class="step-dot"></div>تحليل كثافة المنافسين وحركة المرور...</div>
+        <div class="loader-step" id="step3"><div class="step-dot"></div>معالجة البيانات السكانية والدخل المحلي...</div>
+        <div class="loader-step" id="step4"><div class="step-dot"></div>تشغيل نموذج التنبؤ بالذكاء الاصطناعي...</div>
+        <div class="loader-step" id="step5"><div class="step-dot"></div>توليد التوصيات والبدائل الذكية...</div>
+      </div>
+    </div>
+    <div class="card-title">🎯 حلل فكرة مشروعك</div>
+    <div class="card-subtitle">أدخل تفاصيل مشروعك — ونظامنا يقوم بالباقي</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label>الميزانية (درهم)</label>
+        <input type="text" id="budgetInput" value="200,000">
+      </div>
+      <div class="input-group">
+        <label>المدينة</label>
+        <select id="citySelect">
+          <option selected value="Casablanca">الدار البيضاء</option>
+          <option>الرباط</option><option>مراكش</option><option>فاس</option>
+          <option>طنجة</option><option>أكادير</option><option>بني ملال</option>
+          <option>مكناس</option><option>وجدة</option><option>القنيطرة</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>الحي / المنطقة</label>
+        <input type="text" id="zoneInput" value="المعاريف">
+      </div>
+      <div class="input-group input-full">
+        <label>فكرة مشروعك</label>
+        <input type="text" id="ideaInput" value="مطعم يقدم المأكولات المغربية التقليدية">
+      </div>
+    </div>
+    <button class="analyze-btn" onclick="runAnalysis()">
+      <span>🔍</span><span>حلل فكرتي بالذكاء الاصطناعي</span><span>←</span>
+    </button>
+  </div>
+
+  <!-- شريط البيانات الحية المتقدم -->
+  <div class="live-data-ticker">
+    <span class="ticker-item"><i class="fas fa-circle blink"></i> مباشر</span>
+    <span class="ticker-item"><i class="fas fa-map-pin"></i> حركة المرور بالمعاريف: +8.2% (24 ساعة)</span>
+    <span class="ticker-item"><i class="fas fa-utensils"></i> 3 تقييمات جديدة للمطاعم آخر ساعة</span>
+    <span class="ticker-item"><i class="fas fa-chart-line"></i> مؤشر كثافة المنافسين: 0.74</span>
+    <span class="ticker-item"><i class="fas fa-temperature-high"></i> توقعات الطلب في رمضان: +22%</span>
+  </div>
+
+  <div class="results-panel" id="resultsPanel">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">مصادر البيانات</div><div class="stat-value" style="color:var(--blue)">27</div><div class="stat-change" style="color:var(--green)">+3 جديدة</div></div>
+      <div class="stat-card"><div class="stat-label">المنافسون</div><div class="stat-value" style="color:var(--gold)">11</div><div class="stat-change" style="color:var(--red)">↑ كثافة عالية</div></div>
+      <div class="stat-card"><div class="stat-label">معدل الحركة</div><div class="stat-value" style="color:var(--green)">38.2K</div><div class="stat-change" style="color:var(--green)">↑ جيد</div></div>
+      <div class="stat-card"><div class="stat-label">متوسط الوجبة</div><div class="stat-value" style="color:var(--text)">47</div><div class="stat-change">درهم</div></div>
+    </div>
+
+    <div class="results-grid">
+      <div class="success-card">
+        <div class="success-label">نسبة النجاح المتوقعة</div>
+        <div class="gauge-wrap">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+            <circle cx="55" cy="55" r="46" fill="none" stroke="url(#gaugeGrad)" stroke-width="10"
+              stroke-dasharray="289" stroke-dashoffset="115" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+            <defs><linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs>
+          </svg>
+          <div class="gauge-info">
+            <div class="gauge-pct">60%</div>
+            <div class="gauge-verdict">فرصة متوسطة<br><strong>ينصح بتعديل الفكرة</strong></div>
+          </div>
+        </div>
+        <div class="factors">
+          <div class="factor"><div class="factor-name">الطلب في السوق</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:78%;background:var(--green)"></div></div><div class="factor-val">78%</div></div>
+          <div class="factor"><div class="factor-name">المنافسة</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:38%;background:var(--red)"></div></div><div class="factor-val">38%</div></div>
+          <div class="factor"><div class="factor-name">ملاءمة الميزانية</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:65%;background:var(--gold)"></div></div><div class="factor-val">65%</div></div>
+          <div class="factor"><div class="factor-name">نسبة الموقع</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:70%;background:var(--blue)"></div></div><div class="factor-val">70%</div></div>
+          <div class="factor"><div class="factor-name">مشاعر العملاء</div><div class="factor-bar-wrap"><div class="factor-bar" style="width:55%;background:var(--gold)"></div></div><div class="factor-val">55%</div></div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-title">⚠️ عوامل الخطر الرئيسية</div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--red)"></div><span><strong>تشبع بالمنافسين:</strong> 11 مطعم مغربي ضمن 800 متر.</span></div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--red)"></div><span><strong>ضغط الميزانية:</strong> مطعم كامل يحتاج 300 ألف درهم.</span></div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--gold)"></div><span><strong>سقف السعر:</strong> متوسط الإنفاق 47 درهم.</span></div>
+        <div class="risk-item"><div class="risk-dot" style="background:var(--blue)"></div><span><strong>انخفاض صيفي:</strong> الإيرادات تنخفض 35% يوليو-أغسطس.</span></div>
+      </div>
+    </div>
+
+    <!-- خريطة تفاعلية متقدمة -->
+    <div class="map-card">
+      <div class="map-header"><div class="map-title">🗺️ خريطة الفرص · الدار البيضاء</div><div class="map-legend"><span class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> منافس</span><span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> أفضل منطقة</span><span class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> فكرتك</span></div></div>
+      <div class="map-body" id="interactiveMap">
+        <div class="map-pin" style="left:50%;top:45%" data-zone="maarif"><div class="pin-dot" style="background:var(--gold);border-color:var(--gold)"></div><div class="pin-label">📍 المعاريف</div><div class="zone-tooltip">منطقتك · نسبة 42% · إيجار مرتفع</div></div>
+        <div class="map-pin" style="left:28%;top:65%" data-zone="hayMohammadi"><div class="pin-dot" style="background:var(--green);border-color:var(--green)"></div><div class="pin-label">✨ الحي المحمدي</div><div class="zone-tooltip">أفضل بديل · نسبة 78% · إيجار منخفض</div></div>
+        <div class="map-pin" style="left:48%;top:52%" data-zone="comp1"><div class="pin-dot" style="background:var(--red);border-color:var(--red);animation:none"></div><div class="pin-label">🍽️ منافس</div><div class="zone-tooltip">مطعم مغربي</div></div>
+        <div class="map-pin" style="left:55%;top:38%" data-zone="comp2"><div class="pin-dot" style="background:var(--red);border-color:var(--red);animation:none"></div><div class="pin-label">🍽️ منافس</div><div class="zone-tooltip">مطعم تقليدي</div></div>
+        <div class="map-pin" style="left:42%;top:40%" data-zone="comp3"><div class="pin-dot" style="background:var(--red);border-color:var(--red);animation:none"></div><div class="pin-label">🍽️ منافس</div><div class="zone-tooltip">متخصص في الكسكس</div></div>
+        <div style="position:absolute;bottom:10px;left:15px;font-size:10px;color:var(--muted)">اضغط على النقاط للمزيد</div>
+      </div>
+    </div>
+
+    <!-- نموذج العمل التجاري -->
+    <div class="canvas-section">
+      <div class="canvas-header"><i class="fas fa-th-large" style="color:var(--gold)"></i><h3>نموذج العمل التجاري (للبديل الأفضل)</h3></div>
+      <div class="canvas-grid">
+        <div class="canvas-cell"><span class="label">المشكلة</span><div class="value">خيارات غداء مملة، حساسية للسعر</div></div>
+        <div class="canvas-cell"><span class="label">الحل</span><div class="value">مطبخ سحابي · قائمة متغيرة يومياً</div></div>
+        <div class="canvas-cell"><span class="label">القيمة الفريدة</span><div class="value">"صلصة نوماد" + توصيل 15 دقيقة</div></div>
+        <div class="canvas-cell"><span class="label">الزبائن</span><div class="value">موظفين، طلاب 18-35 سنة</div></div>
+        <div class="canvas-cell"><span class="label">المؤشرات</span><div class="value">نسبة الطلب المتكرر</div></div>
+        <div class="canvas-cell"><span class="label">القنوات</span><div class="value">غلوفو، جمعة، إنستغرام</div></div>
+        <div class="canvas-cell"><span class="label">التكاليف</span><div class="value">80-110 ألف درهم</div></div>
+        <div class="canvas-cell"><span class="label">الإيرادات</span><div class="value">35-60 درهم للوجبة</div></div>
+      </div>
+    </div>
+
+    <!-- أدوات التصدير -->
+    <div class="pdf-toolbar">
+      <button class="pdf-btn" onclick="simulatePDF()"><i class="fas fa-file-pdf"></i> تحميل التقرير الكامل</button>
+      <button class="pdf-btn" onclick="shareIdea()"><i class="fas fa-share-alt"></i> مشاركة الملخص</button>
+    </div>
+
+    <!-- بطاقات التوصيات -->
+    <div class="rec-grid">
+      <div class="rec-card"><div class="rec-icon">📍</div><div class="rec-label">أفضل موقع</div><div class="rec-value">الحي المحمدي</div><div class="rec-note">كثافة منافسة أقل بـ30%</div></div>
+      <div class="rec-card"><div class="rec-icon">🍽️</div><div class="rec-label">القائمة المثلى</div><div class="rec-value">مأكولات سريعة مغربية</div><div class="rec-note">الاعتماد على التوصيل يخفض التكلفة 40%</div></div>
+      <div class="rec-card"><div class="rec-icon">💰</div><div class="rec-label">السعر الأمثل</div><div class="rec-value">30–55 درهم</div><div class="rec-note">82% من الطلبات تحت 60 درهم</div></div>
+    </div>
+
+    <!-- بدائل ذكية -->
+    <div class="alt-section">
+      <div class="alt-header">
+        <div class="alt-tag">⚡ بدائل ذكية</div>
+        <div class="alt-title">أفكار بديلة بمخاطر أقل لميزانية 200,000 درهم</div>
+      </div>
+      <div class="alt-cards">
+        <div class="alt-card best"><div class="best-badge">🏆 الأفضل</div><div class="alt-emoji">🛵</div><div class="alt-name">مطبخ سحابي + توصيل</div><div class="alt-desc">تكاليف منخفضة، لا حاجة لمحل. تكلفة 80-110 ألف درهم.</div><div class="alt-score"><div class="alt-score-bar"><div class="alt-score-fill" style="width:84%"></div></div><div class="alt-score-num">84%</div></div></div>
+        <div class="alt-card"><div class="alt-emoji">🥐</div><div class="alt-name">مخبز + مقهى</div><div class="alt-desc">إقبال صباحي، منافسة أقل. 150-180 ألف درهم.</div><div class="alt-score"><div class="alt-score-bar"><div class="alt-score-fill" style="width:77%"></div></div><div class="alt-score-num">77%</div></div></div>
+        <div class="alt-card"><div class="alt-emoji">📦</div><div class="alt-name">تموين الجملة</div><div class="alt-desc">توريد للمطاعم والفنادق. نسبة فشل منخفضة.</div><div class="alt-score"><div class="alt-score-bar"><div class="alt-score-fill" style="width:72%"></div></div><div class="alt-score-num">72%</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="features-strip">
+  <div class="feature-item"><span class="feature-icon">🇲🇦</span> صُمم للسوق المغربي</div>
+  <div class="feature-item"><span class="feature-icon">📊</span> بيانات محلية محدثة يومياً</div>
+  <div class="feature-item"><span class="feature-icon">🤖</span> تنبؤ بالذكاء الاصطناعي</div>
+  <div class="feature-item"><span class="feature-icon">🔒</span> خصوصية بياناتك</div>
+  <div class="feature-item"><span class="feature-icon">⚡</span> نتائج في أقل من 60 ثانية</div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🔮</div>
+          <div class="footer-logo-text">Istith<span>MAR</span>.ai</div>
+        </div>
+        <p class="footer-tagline">أول منصة مغربية تعتمد الذكاء الاصطناعي لتوجيه الاستثمارات الصغيرة — قرارات ذكية مبنية على البيانات.</p>
+        <div class="founder-sig">
+          <div class="sig-role">المؤسس المشارك</div>
+          <div class="sig-name">مراد زربان</div>
+          <div class="sig-handle">Mourad Zerbane · المغرب</div>
+        </div>
+      </div>
+      <div><div class="footer-col-title">المنصة</div><div class="footer-links"><a class="footer-link">كيف يعمل</a><a class="footer-link">حلل مشروعي</a><a class="footer-link">قصص نجاح</a><a class="footer-link">تقارير السوق</a><a class="footer-link">تطبيق الجوال</a></div></div>
+      <div><div class="footer-col-title">المصادر</div><div class="footer-links"><a class="footer-link">دليل المستثمر</a><a class="footer-link">تحليلات المدن</a><a class="footer-link">اتجاهات القطاعات</a><a class="footer-link">المدونة</a><a class="footer-link">الأسئلة الشائعة</a></div></div>
+      <div><div class="footer-col-title">الشركة</div><div class="footer-links"><a class="footer-link">من نحن</a><a class="footer-link">فريقنا</a><a class="footer-link">المستثمرون</a><a class="footer-link">للصحافة</a><a class="footer-link">اتصل بنا</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        © 2026 <strong>IstithMAR.ai</strong> — جميع الحقوق محفوظة. صُنع بحب في المغرب.<br>
+        تمكين رواد الأعمال المغاربة، قرار ذكي واحد في كل مرة.
+      </div>
+      <div class="footer-badges"><span class="footer-badge">🇲🇦 صنع في المغرب</span><span class="footer-badge">مدعوم بالذكاء الاصطناعي</span><span class="footer-badge">بيانات آمنة</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/a2b9e0a24d.js" crossorigin="anonymous"></script>
+<script>
+  function runAnalysis() {
+    const overlay = document.getElementById('loadingOverlay');
+    const results = document.getElementById('resultsPanel');
+    overlay.classList.add('active');
+    results.classList.remove('visible');
+    [1,2,3,4,5].forEach(i => {
+      document.getElementById('step'+i).classList.remove('active','done');
+    });
+    let current = 0;
+    function nextStep() {
+      if (current > 0) {
+        document.getElementById('step'+current).classList.remove('active');
+        document.getElementById('step'+current).classList.add('done');
+      }
+      current++;
+      if (current <= 5) {
+        document.getElementById('step'+current).classList.add('active');
+        setTimeout(nextStep, 700 + Math.random() * 400);
+      } else {
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          results.classList.add('visible');
+          results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 400);
+      }
+    }
+    nextStep();
+  }
+
+  // تفاعل الخريطة
+  document.querySelectorAll('.map-pin').forEach(pin => {
+    pin.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const zone = pin.getAttribute('data-zone') || 'zone';
+      alert(`📍 تحليل متقدم للمنطقة: ${zone}\n(حركة المرور وكثافة المنافسين في الوقت الفعلي)`);
+    });
+  });
+
+  function simulatePDF() {
+    alert("📄 تم توليد تقرير PDF (محاكاة).\nيتضمن توقعات مالية كاملة، خريطة المنافسين، وسجل المخاطر.\n-- مراد زربان");
+  }
+  function shareIdea() {
+    alert("🔗 تم نسخ رابط الملخص (محاكاة).\n‘استثمر في الدار البيضاء بذكاء’");
+  }
+  window.shareIdea = shareIdea;
+  window.simulatePDF = simulatePDF;
+</script>
+</body>
+</html>
