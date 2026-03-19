@@ -15,7 +15,7 @@
 ## 🔗 الروابط السريعة
 
 <p align="center">
-  <a href="https://mouradpy.github.io/istithmar-ai/index.html" target="_blank">
+  <a href="https://mouradpy.github.io/istithmar-ai/index.HTML" target="_blank">
     <img src="https://img.shields.io/badge/الصفحة_الرئيسية-0078D4?style=for-the-badge&logo=web&logoColor=white" />
   </a>
   <a href="https://mouradpy.github.io/istithmar-ai/IstithmarOtherVersion.html" target="_blank">
