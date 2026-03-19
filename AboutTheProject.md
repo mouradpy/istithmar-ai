@@ -10,6 +10,27 @@
   <strong>أول منصة مغربية تعتمد الذكاء الاصطناعي لتوجيه المستثمرين الصغار وأصحاب الأفكار الريادية</strong>
 </p>
 
+---
+
+## 🔗 الروابط السريعة
+
+<p align="center">
+  <a href="https://mouradpy.github.io/istithmar-ai/index.html" target="_blank">
+    <img src="https://img.shields.io/badge/الصفحة_الرئيسية-0078D4?style=for-the-badge&logo=web&logoColor=white" />
+  </a>
+  <a href="https://mouradpy.github.io/istithmar-ai/IstithmarOtherVersion.html" target="_blank">
+    <img src="https://img.shields.io/badge/نسخة_أخرى-FF6B35?style=for-the-badge&logo=web&logoColor=white" />
+  </a>
+  <a href="https://mouradpy.github.io/istithmar-ai/istithmarArabicVersion.html" target="_blank">
+    <img src="https://img.shields.io/badge/النسخة_العربية-00D084?style=for-the-badge&logo=web&logoColor=white" />
+  </a>
+  <a href="https://mouradpy.github.io/istithmar-ai/ROADMAP.html" target="_blank">
+    <img src="https://img.shields.io/badge/خريطة_الطريق-9C27B0?style=for-the-badge&logo=web&logoColor=white" />
+  </a>
+</p>
+
+---
+
 <div dir="rtl" style="font-family: 'Cairo', sans-serif; line-height: 1.8;">
 
 ## 🌟 نظرة عامة
